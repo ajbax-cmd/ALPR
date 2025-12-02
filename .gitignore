@@ -32,9 +32,8 @@ experiments/
 *.pt
 
 # Data
-data/
-dataset/
-datasets/
+source_data/
+target_data/
 *.zip
 *.tar
 *.tar.gz
