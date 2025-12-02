@@ -1,0 +1,47 @@
+
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+*.log
+*.DS_Store
+.venv/
+venv/
+env/
+*.env
+.venv*/
+venv*/
+*.so
+*.dylib
+.ipynb_checkpoints/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ultralytics 
+runs/
+runs*/ 
+
+# Experiments output 
+experiments/
+
+
+# pytorch weights
+*.pt
+
+# Data
+data/
+dataset/
+datasets/
+*.zip
+*.tar
+*.tar.gz
+
+# Checkpoints / temp
+*.ckpt
+*.tmp
+*.bak
+*.old
+
