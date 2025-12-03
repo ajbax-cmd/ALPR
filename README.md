@@ -23,3 +23,11 @@ python -m scripts.experiment
 3. Cross Domain eval results (source->target and target->source) are logged under ALPR/experiments directory.
 4. Line graphs and Heat Maps are generated and saved under ALPR/plots
 
+## Inference
+1. Run an experiment first to generate target domain datasets and train models first
+2. from the root directory:
+```
+python -m scripts.inference
+```
+3. Test images with bounding box coordinates of both models plotted are saved at ALPR/inference_images
+

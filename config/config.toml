@@ -1,13 +1,13 @@
 # data
 source_root = "src/data/source_data"
-target_root = "src/data/target_data"                                        # if running multiple experiments, rename this if you want to preserve the prvsly generated dataset
+target_root = "src/data/target_data"                  # if running multiple experiments, rename this if you want to preserve the prvsly generated dataset
 # hyperparameters 
-scale = [0.1]                                                       # scaling factor by which to multiply Height and Width image dimensions by for compression
-sigma = [20]                                                           # STD of the gaussian distributed noise added 
-kernel = ["bilinear_gaussian_noise","nearest_neighbor_gaussian_noise"]      #  "nearest_neighbor_gaussian_noise" or "bilinear_gaussian_noise"
+scale = [0.1]                                         # scaling factor by which to multiply Height and Width image dimensions by for compression
+sigma = [30]                                          # STD of the gaussian distributed noise added 
+kernel = ["nearest_neighbor_gaussian_noise"]          #  "nearest_neighbor_gaussian_noise" or "bilinear_gaussian_noise"
 
 # training
-epochs = 5
+epochs = 20
 batch_size = 4
 img_size = 640
 

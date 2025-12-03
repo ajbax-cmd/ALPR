@@ -37,7 +37,7 @@ class YoloWrapper():
         )
         return metrics
     
-    def inference(self, x, show=True, save=False):
+    def inference(self, x, show=False, save=False):
         results = self.model(
             x,
             imgsz=self.img_size,
