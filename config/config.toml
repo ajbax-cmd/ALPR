@@ -13,5 +13,6 @@ img_size = 640
 
 # model weights
 yolo_weights = "yolo12l.pt"
+yolo_cbam_config = "config/yolo12-cbam.yaml"
 rtdeter_weights = "rtdetr-l.pt"
 

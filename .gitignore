@@ -44,3 +44,5 @@ target_data/
 *.bak
 *.old
 
+CBAM_README.md
+.claude/settings.local.json

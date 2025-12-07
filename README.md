@@ -12,7 +12,7 @@ https://universe.roboflow.com/recognision-datasets/uk-number-plate-recognision/d
 
 1. Select YOLOv11 download format and download as a zip file.
 2. Unpack the dataset under the ALPR/src/data directory.
-3. Rename the root direcotry of the dataset "source_data" so that the directory structure is ALPR/src/data/source_data
+3. Rename the root directory of the dataset "source_data" so that the directory structure is ALPR/src/data/source_data
 
 ## Running an Experiment
 1. Set up the ALRP/config/config.toml file with the desired valid parameters and save.
@@ -31,3 +31,11 @@ python -m scripts.inference
 ```
 3. Test images with bounding box coordinates of both models plotted are saved at ALPR/inference_images
 
+## YOLOv12-CBAM
+CBAM (Convolutional Block Attention Module) enhances YOLOv12 by adding channel and spatial attention at P3, P4, and P5 feature levels in the backbone. This helps the model focus on important features and spatial regions, potentially improving robustness to domain shift.
+
+### Quick Test
+Compare baseline YOLOv12 vs YOLOv12-CBAM:
+```
+python scripts/test_cbam.py
+```
