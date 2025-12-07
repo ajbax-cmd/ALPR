@@ -43,6 +43,8 @@ def generate_plots(csv_path, configs):
     df = pd.read_csv(csv_path)
     median_scale = configs["scale"][len(configs["scale"])//2]
     median_sigma = configs["sigma"][len(configs["sigma"])//2]
+    yolo_ret_den = configs["map95_YOLO"]
+    rtdeter_ret_den = configs["map95_RTDETER"]
 
     k0 = configs["kernel"][0]
     # plot mAP vs sigma with fixed scale
@@ -56,6 +58,9 @@ def generate_plots(csv_path, configs):
     # plot heatmaps RTdeter mAP0.95 - YOLOv12 mAP0.95 for each scale sigma pair
     plot_heat_map(df,kernel=k0, train_on="source", eval_on="target", out_path=f"plots/heatmap_{k0}_source_target.png")
     plot_heat_map(df,kernel=k0, train_on="target", eval_on="source", out_path=f"plots/heatmap_{k0}_target_source.png")
+    
+    # plot retention
+    plot_percent_drop_gridline(df, configs, kernel=k0, out_path=f"plots/retention_{k0}.png")
 
     if len(configs["kernel"]) > 1:
         k1 = configs["kernel"][1]
@@ -118,7 +123,7 @@ def plot_scale_fixed_sigma(df, kernel, sigma, out_path=None):
     else:
         plt.show()
 
-def plot_heat_map(df, kernel,train_on="source",eval_on="target",out_path=None,):
+def plot_heat_map(df, kernel, train_on="source",eval_on="target",out_path=None):
     sub = df[(df["kernel"] == kernel)&(df["train_on"] == train_on)&(df["eval_on"] == eval_on)]
     if sub.empty:
         return
@@ -170,6 +175,61 @@ def plot_heat_map(df, kernel,train_on="source",eval_on="target",out_path=None,):
         plt.close()
     else:
         plt.show()
+
+def plot_percent_drop_gridline(df, configs, kernel, out_path=None):
+    yolo_baseline = configs["map95_YOLO"]
+    rtdeter_baseline = configs["map95_RTDETER"]
+
+    baseline_map95 = {
+        "yolov12l": yolo_baseline,
+        "rtdeter-l": rtdeter_baseline
+    }
+
+    sub = df[
+        (df["kernel"] == kernel) &
+        (df["train_on"] == "source") &
+        (df["eval_on"] == "target")
+    ].copy()
+
+    if sub.empty:
+        return
+
+    sub = sub[sub["model"].isin(["yolov12l", "rtdeter-l"])]
+
+
+    sub["baseline"] = sub["model"].map(baseline_map95)
+
+    sub = sub.dropna(subset=["baseline"])
+    if sub.empty:
+        return
+
+    sub["retention"] = sub["map5095"] / sub["baseline"]
+    sub["pct_drop"] = 100 * (1 - sub["retention"])
+
+    sub["x_label"] = sub.apply(lambda r: f"s={r['scale']}, σ={int(r['sigma'])}", axis=1)
+
+    sub = sub.sort_values(["scale", "sigma"])
+    x_order = sub["x_label"].drop_duplicates().tolist()
+
+    plt.figure(figsize=(8, 3.5))
+    for model, g in sub.groupby("model"):
+        g = g.set_index("x_label").loc[x_order].reset_index()
+        label = "YOLOv12" if model == "yolov12l" else "RT-DETR"
+        plt.plot(g["x_label"], g["pct_drop"], marker="o", label=label)
+
+    plt.xticks(rotation=45, ha="right")
+    plt.ylabel("% drop from source baseline (mAP@0.5:0.95)")
+    plt.title(f"Source→Target percent drop across (scale, σ)\nkernel={kernel}")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.tight_layout()
+
+    if out_path:
+        plt.savefig(out_path, bbox_inches="tight")
+        plt.close()
+    else:
+        plt.show()
+
 
 def run_experiment():
     # read .toml
@@ -286,8 +346,13 @@ def run_experiment():
     return experiment_root_path, configs
 
 def main():
+    # read .toml
+    configs = read_configs()
+    # create experiment root directory
+    csv_path = os.path.join(os.getcwd(),'experiments')
 
-    csv_path, configs = run_experiment()
+
+    #csv_path, configs = run_experiment()
     csv_path = os.path.join(csv_path,'global_results.csv')
     generate_plots(csv_path, configs)
 

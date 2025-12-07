@@ -1,10 +1,10 @@
 # data
 source_root = "src/data/source_data"
-target_root = "src/data/target_data"                  # if running multiple experiments, rename this if you want to preserve the prvsly generated dataset
+target_root = "src/data/target_data"                                            # if running multiple experiments, rename this if you want to preserve the prvsly generated dataset
 # hyperparameters 
-scale = [0.1]                                         # scaling factor by which to multiply Height and Width image dimensions by for compression
-sigma = [30]                                          # STD of the gaussian distributed noise added 
-kernel = ["nearest_neighbor_gaussian_noise"]          #  "nearest_neighbor_gaussian_noise" or "bilinear_gaussian_noise"
+scale = [0.1,0.2,0.3,0.4]                                                       # scaling factor by which to multiply Height and Width image dimensions by for compression
+sigma = [0,10,20,30]                                                            # STD of the gaussian distributed noise added 
+kernel = ["bilinear_gaussian_noise","nearest_neighbor_gaussian_noise"]          #  "nearest_neighbor_gaussian_noise" or "bilinear_gaussian_noise"
 
 # training
 epochs = 20
@@ -15,3 +15,6 @@ img_size = 640
 yolo_weights = "yolo12l.pt"
 rtdeter_weights = "rtdetr-l.pt"
 
+# retention denominator - run python -m scripts.base_line from root dir first on source dataset and paste the mAP50:95 for each model
+map95_RTDETER = 0.7058665316951072
+map95_YOLO = 0.6083070274137253
