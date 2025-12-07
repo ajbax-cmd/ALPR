@@ -73,6 +73,8 @@ def generate_plots(csv_path, configs):
         # plot heatmaps RTdeter mAP0.95 - YOLOv12 mAP0.95 for each scale sigma pair
         plot_heat_map(df,kernel=k1, train_on="source", eval_on="target", out_path=f"plots/heatmap_{k1}_source_target.png")
         plot_heat_map(df,kernel=k1, train_on="target", eval_on="source", out_path=f"plots/heatmap_{k1}_target_source.png")
+        # plot retention
+        plot_percent_drop_gridline(df, configs, kernel=k1, out_path=f"plots/retention_{k1}.png")
 
 
 def plot_sigma_fixed_scale(df, kernel, scale, out_path=None):
@@ -347,12 +349,12 @@ def run_experiment():
 
 def main():
     # read .toml
-    configs = read_configs()
+    #configs = read_configs()
     # create experiment root directory
-    csv_path = os.path.join(os.getcwd(),'experiments')
+    #csv_path = os.path.join(os.getcwd(),'experiments')
 
 
-    #csv_path, configs = run_experiment()
+    csv_path, configs = run_experiment()
     csv_path = os.path.join(csv_path,'global_results.csv')
     generate_plots(csv_path, configs)
 
