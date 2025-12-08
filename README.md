@@ -25,7 +25,7 @@ python -m scripts.experiment
 
 ## Inference
 1. Run an experiment first to generate target domain datasets and train models first
-2. from the root directory:
+2. From the root directory:
 ```
 python -m scripts.inference
 ```
