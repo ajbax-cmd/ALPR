@@ -27,6 +27,9 @@ runs*/
 # Experiments output 
 experiments/
 
+# inference_images
+inference_images/
+
 
 # pytorch weights
 *.pt
